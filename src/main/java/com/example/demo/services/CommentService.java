@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.entities.Comment;
+import com.example.demo.entities.Post;
 import com.example.demo.repositories.CommandRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,5 +35,8 @@ public class CommentService implements GestionComment{
     public void deleteComment(String id) {
         commandRepo.deleteById(Integer.valueOf(id));
 
+    }
+    public List<Comment> getCommentsByPost(Post post) {
+        return commandRepo.findByPost(post); // Call the updated method
     }
 }
