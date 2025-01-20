@@ -16,7 +16,9 @@ public class UserService implements GestionUser{
     public Optional<User> getUser(String id) {
         return Optional.ofNullable(userRepo.findById(Long.valueOf(id)).orElse(null));
     }
-
+    public User authenticate(String email, String password) {
+        return userRepo.findByEmailAndPassword(email, password);
+    }
 
 
     @Override
@@ -38,5 +40,9 @@ public class UserService implements GestionUser{
     @Override
     public User updateUser(User user) {
         return userRepo.save(user);
+    }
+
+    public User findById(Long userId) {
+        return userRepo.findById(userId).orElse(null);
     }
 }

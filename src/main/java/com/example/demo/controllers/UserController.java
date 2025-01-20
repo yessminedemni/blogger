@@ -42,4 +42,16 @@ import java.util.List;
         User updatedUser  = userService.updateUser (user);
         return ResponseEntity.ok(updatedUser ); // Return the updated user
     }
+    @PostMapping("/signin")
+    public User signIn(@RequestBody User user) {
+        String email = user.getEmail();
+        String password = user.getPassword();
+        User authenticatedUser  = userService.authenticate(email, password);
+
+        if (authenticatedUser  != null) {
+            return authenticatedUser ; // Return the authenticated user
+        } else {
+            throw new RuntimeException("Invalid email or password"); // Handle invalid credentials
+        }
+    }
 }

@@ -20,4 +20,23 @@ import org.springframework.web.bind.annotation.*;
         } catch (StripeException e) {
             return ResponseEntity.status(500).body("Payment failed: " + e.getMessage());
         }
-    }}
+    }
+    @PostMapping("/confirm")
+    public ResponseEntity<String> confirmPayment(@RequestBody String clientSecret) {
+        try {
+            // Retrieve the PaymentIntent using the clientSecret
+            PaymentIntent paymentIntent = PaymentIntent.retrieve(clientSecret);
+
+            // If the payment is in a state that requires confirmation, confirm it
+            if (paymentIntent.getStatus().equals("requires_confirmation")) {
+                paymentIntent.confirm();
+            }
+
+            // Return the status of the payment
+            return ResponseEntity.ok("Payment confirmed: " + paymentIntent.getStatus());
+        } catch (StripeException e) {
+            return ResponseEntity.status(500).body("Payment confirmation failed: " + e.getMessage());
+        }
+    }
+
+}
